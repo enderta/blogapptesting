@@ -1,6 +1,7 @@
 package com.stepDef;
 
-import com.example.testingproject.utilities.ConfigurationReader;
+
+import com.utilities.ConfigurationReader;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

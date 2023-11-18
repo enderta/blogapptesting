@@ -1,4 +1,4 @@
-package com.example.testingproject.utilities;
+package com.utilities;
 
 import io.restassured.http.ContentType;
 

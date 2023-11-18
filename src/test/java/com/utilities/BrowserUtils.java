@@ -1,4 +1,4 @@
-package com.example.testingproject.utilities;
+package com.utilities;
 
 
 import org.junit.Assert;
@@ -6,7 +6,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

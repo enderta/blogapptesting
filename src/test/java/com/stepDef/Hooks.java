@@ -1,9 +1,9 @@
 package com.stepDef;
 
 
-import com.example.testingproject.utilities.BrowserUtils;
-import com.example.testingproject.utilities.ConfigurationReader;
-import com.example.testingproject.utilities.Driver;
+import com.utilities.BrowserUtils;
+import com.utilities.ConfigurationReader;
+import com.utilities.Driver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;

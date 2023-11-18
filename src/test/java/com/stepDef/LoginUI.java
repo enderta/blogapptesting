@@ -1,8 +1,8 @@
 package com.stepDef;
 
-import com.example.testingproject.utilities.BrowserUtils;
-import com.example.testingproject.utilities.ConfigurationReader;
-import com.example.testingproject.utilities.Driver;
+import com.utilities.BrowserUtils;
+import com.utilities.ConfigurationReader;
+import com.utilities.Driver;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 public class LoginUI {
     @Given("I am on the login page")
     public void i_am_on_the_login_page() {
+
         Driver.getDriver().findElement(By.xpath("//a[.='Login']")).click();
     }
     @When("I enter username and password")
