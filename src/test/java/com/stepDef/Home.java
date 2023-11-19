@@ -1,7 +1,6 @@
 package com.stepDef;
 
 import com.utilities.BrowserUtils;
-import com.utilities.ConfigurationReader;
 import com.utilities.Driver;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
