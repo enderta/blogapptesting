@@ -52,9 +52,7 @@ public class Hooks {
             final byte[] screenShot = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenShot, "image/png", "screenshot");
         }
-        WebElement element = Driver.getDriver().findElement(By.xpath("//button[.='Logout']"));
-        JavascriptExecutor js = (JavascriptExecutor) Driver.getDriver();
-        js.executeScript("arguments[0].click();", element);
+
         Driver.closeDriver();
 
 
