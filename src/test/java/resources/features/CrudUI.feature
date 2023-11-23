@@ -15,9 +15,9 @@ Feature: Blogging System Administration
     When The "Add" button is clicked
     Then The user is directed to the Add Post page
     When The user enters a valid "title","content" and "author" for the post
-    And The "Add" button is clicked
-    Then The post with "title" and "body" is visible on the Blog Homepage
-  @crud @ui
+    And The "Submit" button is clicked
+    Then The post with "author" and "content" is visible on the Blog Homepage
+
   Scenario: User Edit a Post
     Given A post already exists with a known "title"
     When The "Edit" button corresponding to the known post is clicked
@@ -25,12 +25,12 @@ Feature: Blogging System Administration
     When The user modifies the "title" and
     And The "Edit" button is clicked
     Then The updated "title" is visible on the Blog Homepage
-  @crud @ui
+
   Scenario: User Delete a Post
     Given A post already exists with a known "title" and "body"
     When The "Delete" button corresponding to the known post is clicked
     Then The post with "title" is not found on the Blog Homepage
-  @crud @ui
+
   Scenario: User Logout
     Then I should see the Add and Logout buttons
     When I click the Logout button

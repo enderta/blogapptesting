@@ -8,6 +8,9 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class Home {
     @Given("I am on the main page I see the {string} text")
@@ -29,6 +32,8 @@ public class Home {
     @Then("I should see the posts in")
     public void i_should_see_the_posts_in() {
         WebElement element = Driver.getDriver().findElement(By.xpath("//a[.='Admin Login']"));
+        WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofMinutes(3));
+        wait.until(driver -> element.isDisplayed());
         Assert.assertTrue(element.isDisplayed());
 
     }
