@@ -10,7 +10,7 @@ Feature: Blogging System Administration
     And I click the Login button
     Then I should see the Add and Logout buttons
 
-    @crud @ui
+
   Scenario: User Login and Create Post
     When The "Add" button is clicked
     Then The user is directed to the Add Post page
@@ -18,13 +18,13 @@ Feature: Blogging System Administration
     And The "Submit" button is clicked
     Then The post with "author" and "content" is visible on the Blog Homepage
 
+  @crud @ui
   Scenario: User Edit a Post
-    Given A post already exists with a known "title"
-    When The "Edit" button corresponding to the known post is clicked
-    Then The user is directed to the Edit Post page
-    When The user modifies the "title" and
-    And The "Edit" button is clicked
-    Then The updated "title" is visible on the Blog Homepage
+    Given A post already exists with a known "content"
+    When The "Edit" button is clicked
+    When The user modifies the "content2" and
+    And The "Submit" button is clicked
+    Then The updated "content2" is visible on the Blog Homepage
 
   Scenario: User Delete a Post
     Given A post already exists with a known "title" and "body"

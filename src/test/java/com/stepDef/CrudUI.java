@@ -57,14 +57,15 @@ public class CrudUI {
 
     }
     @Given("A post already exists with a known {string}")
-    public void a_post_already_exists_with_a_known(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void a_post_already_exists_with_a_known(String content) {
+        WebElement element = Driver.getDriver().findElement(By.xpath("(//div[@class='card-body'])[1]//p[2]"));
+        String actualAuthor = element.getText();
+        System.out.println(actualAuthor);
+        Assert.assertTrue(actualAuthor.contains(content));
     }
     @When("The {string} button corresponding to the known post is clicked")
     public void the_button_corresponding_to_the_known_post_is_clicked(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+
     }
     @Then("The user is directed to the Edit Post page")
     public void the_user_is_directed_to_the_edit_post_page() {
@@ -72,14 +73,18 @@ public class CrudUI {
         throw new io.cucumber.java.PendingException();
     }
     @When("The user modifies the {string} and")
-    public void the_user_modifies_the_and(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void the_user_modifies_the_and(String content) {
+        WebElement element = Driver.getDriver().findElement(By.xpath("//input[@name='author']"));
+        element.clear();
+        element.sendKeys(content);
+        BrowserUtils.waitFor(5);
     }
     @Then("The updated {string} is visible on the Blog Homepage")
-    public void the_updated_is_visible_on_the_blog_homepage(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void the_updated_is_visible_on_the_blog_homepage(String content) {
+        WebElement element = Driver.getDriver().findElement(By.xpath("(//div[@class='card-body'])[1]//p[2]"));
+        String actualAuthor = element.getText();
+        System.out.println(actualAuthor);
+        Assert.assertTrue(actualAuthor.contains(content));
     }
     @Given("A post already exists with a known {string} and {string}")
     public void a_post_already_exists_with_a_known_and(String string, String string2) {
