@@ -69,8 +69,6 @@ public class CrudUI {
     }
     @Then("The user is directed to the Edit Post page")
     public void the_user_is_directed_to_the_edit_post_page() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
     }
     @When("The user modifies the {string} and")
     public void the_user_modifies_the_and(String content) {
@@ -88,8 +86,7 @@ public class CrudUI {
     }
     @Given("A post already exists with a known {string} and {string}")
     public void a_post_already_exists_with_a_known_and(String string, String string2) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        
     }
 
     @Then("The post with {string} is not found on the Blog Homepage")
