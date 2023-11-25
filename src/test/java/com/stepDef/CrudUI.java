@@ -84,15 +84,14 @@ public class CrudUI {
         System.out.println(actualAuthor);
         Assert.assertTrue(actualAuthor.contains(content));
     }
-    @Given("A post already exists with a known {string} and {string}")
-    public void a_post_already_exists_with_a_known_and(String string, String string2) {
-        
-    }
+
 
     @Then("The post with {string} is not found on the Blog Homepage")
-    public void the_post_with_is_not_found_on_the_blog_homepage(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    public void the_post_with_is_not_found_on_the_blog_homepage(String content) {
+        WebElement element = Driver.getDriver().findElement(By.xpath("(//div[@class='card-body'])[1]//p[2]"));
+        String actualAuthor = element.getText();
+
+        Assert.assertFalse(actualAuthor.contains(content));
     }
 
 }

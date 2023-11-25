@@ -18,7 +18,7 @@ Feature: Blogging System Administration
     And The "Submit" button is clicked
     Then The post with "author" and "content" is visible on the Blog Homepage
 
-  @crud @ui
+
   Scenario: User Edit a Post
     Given A post already exists with a known "content"
     When The "Edit" button is clicked
@@ -26,10 +26,11 @@ Feature: Blogging System Administration
     And The "Submit" button is clicked
     Then The updated "content2" is visible on the Blog Homepage
 
+  @crud @ui
   Scenario: User Delete a Post
-    Given A post already exists with a known "title" and "body"
-    When The "Delete" button corresponding to the known post is clicked
-    Then The post with "title" is not found on the Blog Homepage
+    Given A post already exists with a known "content"
+    When The "Delete" button is clicked
+    Then The post with "content" is not found on the Blog Homepage
 
   Scenario: User Logout
     Then I should see the Add and Logout buttons
