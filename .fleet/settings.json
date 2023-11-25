@@ -1,0 +1,36 @@
+{
+    "plugins": [
+        {
+            "type": "add",
+            "pluginName": "fleet.ai"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.intellij"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.java"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.maven"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.spring.boot"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.xml"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.git.frontend"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.emmet"
+        }
+    ]
+}
