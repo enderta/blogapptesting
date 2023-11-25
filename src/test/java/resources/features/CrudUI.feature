@@ -10,7 +10,7 @@ Feature: Blogging System Administration
     And I click the Login button
     Then I should see the Add and Logout buttons
 
-
+  @crud @ui
   Scenario: User Login and Create Post
     When The "Add" button is clicked
     Then The user is directed to the Add Post page

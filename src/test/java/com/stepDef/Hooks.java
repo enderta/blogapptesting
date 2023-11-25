@@ -8,6 +8,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.restassured.RestAssured;
+import org.junit.Assert;
 import org.openqa.selenium.*;
 
 
@@ -52,7 +53,9 @@ public class Hooks {
             final byte[] screenShot = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenShot, "image/png", "screenshot");
         }
-
+        BrowserUtils.waitFor(3);
+       Driver.getDriver().findElement(By.xpath("//button[.='Logout']")).click();
+        System.out.println("logouted");
         Driver.closeDriver();
 
 
