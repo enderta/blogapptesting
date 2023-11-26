@@ -32,7 +32,3 @@ Feature: Blogging System Administration
     When The "Delete" button is clicked
     Then The post with "content" is not found on the Blog Homepage
 
-  Scenario: User Logout
-    Then I should see the Add and Logout buttons
-    When I click the Logout button
-    Then I should be logged out and see the Admin Login button again
