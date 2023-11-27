@@ -1,5 +1,6 @@
 Feature: API tests for Graphql Blog, User and Authentication services
 
+  @api @create
   Scenario: Verify creation of a blog post
     Given I am an authenticated user
     When I perform a POST request to "/blogposts" with valid payload
