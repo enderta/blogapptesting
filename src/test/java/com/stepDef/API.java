@@ -6,6 +6,8 @@ import io.cucumber.java.en.*;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.junit.Assert;
+
 import java.util.HashMap;
 import java.util.Map;
 import static io.restassured.RestAssured.given;
@@ -43,17 +45,38 @@ public class API {
     }
     @When("I perform a POST request to {string} with valid payload")
     public void i_perform_a_post_request_to_with_valid_payload(String string) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        JsonObject body = new JsonObject();
+        String creatingBlog="mutation Mutation($title: String!, $content: String!, $author: String!, $imageUrl: String!) {\n" +
+                "  createBlogPost(title: $title, content: $content, author: $author, image_url: $imageUrl) {\n" +
+                "    author\n" +
+                "  }\n" +
+                "}"
+                ;
+        body.addProperty("query", creatingBlog);
+
+        JsonObject variables = new JsonObject();
+        variables.addProperty("title", "API");
+        variables.addProperty("content", "API");
+        variables.addProperty("author", "ender");
+        variables.addProperty("imageUrl", "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.oreilly.com%2Flibrary%2Fview%2Frestful-java-web%2F9781789531755%2Fb0d9f0c2-3b1a-4b0e-8b0a-9b0b8b8b0b");
+        body.add("variables", variables);
+
+        response = given()
+                .contentType("application/json")
+                .header("Authorization", tkn)
+                .body(body.toString())
+                .when().post().prettyPeek();
+
     }
     @Then("I expect the status code to be {int}")
     public void i_expect_the_status_code_to_be(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        response.then().statusCode(int1);
     }
     @Then("I verify the response contains the id, title, content and author")
     public void i_verify_the_response_contains_the_id_title_content_and_author() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+       JsonPath jsonPath = response.jsonPath();
+            String author = jsonPath.getString("data.createBlogPost.author");
+            System.out.println("author = " + author);
+        Assert.assertEquals("ender",author);
     }
 }
