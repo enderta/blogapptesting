@@ -16,9 +16,15 @@ import static io.restassured.RestAssured.when;
 public class API {
     String tkn;
     Response response;
+    Response response2;
+    String id;
+    String updateBlogPostId;
+    String author;
+    String title;
+    String content;
+    String authorUpdate;
     @Given("I am an authenticated user")
     public void i_am_an_authenticated_user() {
-           // Input body setup
         JsonObject body = new JsonObject();
 
         // The mutation provided
@@ -34,7 +40,7 @@ public class API {
         body.add("variables", variables);
 
         // Execute Post Request
-         response = given()
+        response = given()
                 .contentType("application/json")
                 .body(body.toString())
                 .when().post().prettyPeek();
@@ -49,6 +55,7 @@ public class API {
         String creatingBlog="mutation Mutation($title: String!, $content: String!, $author: String!, $imageUrl: String!) {\n" +
                 "  createBlogPost(title: $title, content: $content, author: $author, image_url: $imageUrl) {\n" +
                 "    author\n" +
+                "id\n" +
                 "  }\n" +
                 "}"
                 ;
@@ -66,7 +73,6 @@ public class API {
                 .header("Authorization", tkn)
                 .body(body.toString())
                 .when().post().prettyPeek();
-
     }
     @Then("I expect the status code to be {int}")
     public void i_expect_the_status_code_to_be(Integer int1) {
@@ -74,9 +80,104 @@ public class API {
     }
     @Then("I verify the response contains the id, title, content and author")
     public void i_verify_the_response_contains_the_id_title_content_and_author() {
-       JsonPath jsonPath = response.jsonPath();
-            String author = jsonPath.getString("data.createBlogPost.author");
-            System.out.println("author = " + author);
+        JsonPath jsonPath = response.jsonPath();
+        String author = jsonPath.getString("data.createBlogPost.author");
+        System.out.println("author = " + author);
         Assert.assertEquals("ender",author);
     }
+    @When("I perform a POST request to {string} with valid payload for update")
+    public void i_perform_a_post_request_to_with_valid_payload_for_update(String string) {
+        JsonObject body = new JsonObject();
+        String blogPosts = "query Query {\n" +
+                "  getBlogPosts {\n" +
+                "    author\n" +
+                "    id\n" +
+                "    created_at\n" +
+                "  }\n" +
+                "}";
+
+        body.addProperty("query", blogPosts);
+
+        Response response = given()
+                .contentType("application/json")
+                .header("Authorization", tkn)
+                .body(body.toString())
+                .when().post().prettyPeek(); // Replace "/your_endpoint" with your actual endpoint
+        JsonPath jsonPath = response.jsonPath();
+         id = jsonPath.getString("data.getBlogPosts[-1].id");
+
+        String updateBlog = "mutation Mutation($updateBlogPostId: ID!, $title: String!, $content: String!, $author: String!) {\n" +
+                "  updateBlogPost(id: $updateBlogPostId, title: $title, content: $content, author: $author) {\n" +
+                "    author\n" +
+                "  }\n" +
+                "}";
+
+// Create a new JsonObject for the second GraphQL mutation
+        JsonObject body2 = new JsonObject();
+        body2.addProperty("query", updateBlog);
+
+        JsonObject variables2 = new JsonObject();
+        variables2.addProperty("updateBlogPostId", id);
+        variables2.addProperty("title", "API");
+        variables2.addProperty("content", "API");
+        variables2.addProperty("author", "ender2");
+
+        body2.add("variables", variables2);
+
+         response2 = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", tkn)
+                .body(body2.toString())
+                .when().post().prettyPeek(); // Replace "/your_endpoint" with your actual endpoint
+        System.out.println(response2.asString());
+    }
+
+    @Then("I verify the response contains the new author")
+    public void i_verify_the_response_contains_the_new_author() {
+        JsonObject body = new JsonObject();
+        String blogPosts = "query Query {\n" +
+                "  getBlogPosts {\n" +
+                "    author\n" +
+                "    id\n" +
+                "    created_at\n" +
+                "  }\n" +
+                "}";
+
+        body.addProperty("query", blogPosts);
+
+        Response response = given()
+                .contentType("application/json")
+                .header("Authorization", tkn)
+                .body(body.toString())
+                .when().post().prettyPeek(); // Replace "/your_endpoint" with your actual endpoint
+        JsonPath jsonPath = response.jsonPath();
+         id = jsonPath.getString("data.getBlogPosts[-1].id");
+        String author = jsonPath.getString("data.getBlogPosts[-1].author");
+        System.out.println("author = " + author);
+        Assert.assertEquals("ender2",author);
+    }
+    @When("I perform a DELETE request to {string}")
+    public void i_perform_a_delete_request_to(String string) {
+       JsonObject bodyDelete=new JsonObject();
+         String deleteBlog="mutation Mutation($deleteBlogPostId: ID!) {\n" +
+                 "  deleteBlogPost(id: $deleteBlogPostId) {\n" +
+                 "    author\n" +
+                 "  }\n" +
+                 "}";
+            bodyDelete.addProperty("query",deleteBlog);
+            JsonObject variablesDelete=new JsonObject();
+            variablesDelete.addProperty("deleteBlogPostId",id);
+
+            bodyDelete.add("variables",variablesDelete);
+            response=given()
+                    .contentType(ContentType.JSON)
+                    .header("Authorization",tkn)
+                    .body(bodyDelete.toString())
+                    .when().post().prettyPeek();
+
+
+
+    }
+
+
 }
