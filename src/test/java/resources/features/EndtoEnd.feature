@@ -1,21 +1,24 @@
-Feature: End to End tests for Blog Post creation, reading and deletion
+Feature: End-to-End tests for Blog Post creation, reading, and deletion
 
-  Scenario: Verify successful creation, retrieval and deletion of a blog post through UI and API
-    Given I am an authenticated user on the homepage
-    When I click on 'Create New Blog Post'
-    And fill in 'Title', 'Author', 'Content' and 'Image URL' with valid data
-    And click 'Submit'
-    Then a success message is displayed on the UI
-    And the new Blog Post is visible on the homepage
+  Scenario: Verify successful creation of a blog post through API
+    Given I am an authenticated user
+    When I perform a POST request to "/blogposts" with valid payload
+    Then I expect the status code to be 200
+    And I verify the response contains the id, title, content, and author
 
-    When I make a GET request to the API endpoint '/blogposts'
-    Then I verify the status code is 200
-    And the response includes the blog post with the given 'Title' and 'Author'
+  Scenario: Verify the newly created blog post is visible on the UI
+    Given I am on the main page
+    When I see the "Welcome to my Blog" text
+    And I click the "Home" link
+    Then The post with "content" should be visible on the Blog Homepage
 
-    When I click on 'Delete' for the blog post on the UI
-    Then a success message is displayed on the UI
-    And the Blog Post is no longer visible on the homepage
+  Scenario: Delete the post through the API
+    Given I am an authenticated user
+    When I perform a DELETE request to "/blogposts/{id}" with valid post id
+    Then I expect the status code to be 200
 
-    When I make a GET request to the API endpoint '/blogposts'
-    Then I verify the status code is 200
-    And the response does not include the blog post with the given 'Title' and 'Author'
+  Scenario: Verify the deleted blog post is not visible on the UI
+    Given I am on the main page
+    When I see the "Welcome to my Blog" text
+    And I click the "Home" link
+    Then The post with a specified id should not be found on the Blog Homepage
