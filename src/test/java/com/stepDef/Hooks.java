@@ -54,7 +54,7 @@ public class Hooks {
             scenario.attach(screenShot, "image/png", "screenshot");
         }
         BrowserUtils.waitFor(3);
-       Driver.getDriver().findElement(By.xpath("//button[.='Logout']")).click();
+      // Driver.getDriver().findElement(By.xpath("//button[.='Logout']")).click();
         System.out.println("logouted");
         Driver.closeDriver();
 

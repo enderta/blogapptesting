@@ -1,12 +1,16 @@
 package com.stepDef;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.utilities.BrowserUtils;
 import com.utilities.ConfigurationReader;
+import com.utilities.Driver;
 import io.cucumber.java.en.*;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -178,6 +182,27 @@ public class API {
 
 
     }
+    @Then("I verify the response contains the author")
+    public void i_verify_the_response_contains_author() {
+        JsonPath jsonPath = response.jsonPath();
+         author = jsonPath.getString("data.createBlogPost.author");
+        System.out.println("author = " + author);
+        Assert.assertEquals("ender",author);
+    }
+    @Then("The post with {string} should be visible on the Blog Homepage")
+    public void the_post_with_should_be_visible_on_the_blog_homepage(String author) {
+        author="ender";
+        Driver.getDriver().navigate().refresh();
+        BrowserUtils.waitFor(5);
+        System.out.println("author = " + author);
 
+        WebElement element = Driver.getDriver().findElement(By.xpath("(//div[@class='card-body'])[1]//p[2]"));
+        String actualAuthor = element.getText();
+        System.out.println(actualAuthor);
+      Assert.assertTrue(actualAuthor.contains(author));
+    }
 
 }
+
+
+

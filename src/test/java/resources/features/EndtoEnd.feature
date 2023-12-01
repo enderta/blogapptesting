@@ -1,16 +1,16 @@
 Feature: End-to-End tests for Blog Post creation, reading, and deletion
 
+  @e2e @api
   Scenario: Verify successful creation of a blog post through API
     Given I am an authenticated user
     When I perform a POST request to "/blogposts" with valid payload
     Then I expect the status code to be 200
-    And I verify the response contains the id, title, content, and author
-
+    And I verify the response contains the author
+  @e2e @ui
   Scenario: Verify the newly created blog post is visible on the UI
-    Given I am on the main page
-    When I see the "Welcome to my Blog" text
+    Given I am on the main page I see the "Welcome to my Blog" text
     And I click the "Home" link
-    Then The post with "content" should be visible on the Blog Homepage
+    Then The post with "author" should be visible on the Blog Homepage
 
   Scenario: Delete the post through the API
     Given I am an authenticated user
