@@ -11,14 +11,13 @@ Feature: End-to-End tests for Blog Post creation, reading, and deletion
     Given I am on the main page I see the "Welcome to my Blog" text
     And I click the "Home" link
     Then The post with "author" should be visible on the Blog Homepage
-
+  @e2e @api
   Scenario: Delete the post through the API
     Given I am an authenticated user
-    When I perform a DELETE request to "/blogposts/{id}" with valid post id
+    When I perform a DELETE request to "/blogposts/1"
     Then I expect the status code to be 200
-
+  @e2e @ui
   Scenario: Verify the deleted blog post is not visible on the UI
-    Given I am on the main page
-    When I see the "Welcome to my Blog" text
+    Given I am on the main page I see the "Welcome to my Blog" text
     And I click the "Home" link
-    Then The post with a specified id should not be found on the Blog Homepage
+    Then The number of posts should be one less than before

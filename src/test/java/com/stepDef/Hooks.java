@@ -1,6 +1,6 @@
 package com.stepDef;
 
-
+import com.google.gson.JsonObject;
 import com.utilities.BrowserUtils;
 import com.utilities.ConfigurationReader;
 import com.utilities.Driver;
@@ -8,11 +8,20 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import org.junit.Assert;
 import org.openqa.selenium.*;
 
+import java.util.List;
+
+import static io.restassured.RestAssured.given;
 
 public class Hooks {
+    protected static String tkn;
+    protected static String id;
+    protected static int numberofPosts;
+    protected static Response response;
 
     @Before("@db")
     public void dbHook() {
@@ -37,13 +46,37 @@ public class Hooks {
 
         Driver.getDriver().navigate().refresh();
 
+
+
     }
 
     @Before("@api")
     public void setUpApi() throws InterruptedException {
      //restasured base uri
         RestAssured.baseURI = ConfigurationReader.getProperty("base_url");
-        //wait for response
+        JsonObject body = new JsonObject();
+
+        // The mutation provided
+        String graphQlMutation = "mutation LoginUser($username: String!, $password: String!) {" +
+                "loginUser(username: $username, password: $password) { token } }";
+
+        body.addProperty("query", graphQlMutation);
+
+        // Add variables to the request
+        JsonObject variables = new JsonObject();
+        variables.addProperty("username", ConfigurationReader.getProperty("username"));
+        variables.addProperty("password", ConfigurationReader.getProperty("password"));
+        body.add("variables", variables);
+
+        // Execute Post Request
+        response = given()
+                .contentType("application/json")
+                .body(body.toString())
+                .when().post().prettyPeek();
+
+        JsonPath jsonPath = response.jsonPath();
+        tkn = jsonPath.getString("data.loginUser.token");
+
 
     }
 
@@ -60,4 +93,13 @@ public class Hooks {
 
 
     }
+    @After("@api and @ui")
+    public void tearDownAfterScenario() {
+        // Reset the tkn, id and numberofPosts variables after each scenario
+        tkn = null;
+        id = null;
+        numberofPosts = 0;
+    }
+
+    // Rest of your hooks implementation...
 }
