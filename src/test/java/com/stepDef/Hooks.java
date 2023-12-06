@@ -39,7 +39,7 @@ public class Hooks {
     @Before("@ui")
     public void setUp() {
         // we put a logic that should apply to every scenario
-       BrowserUtils.waitFor(5);
+        BrowserUtils.waitFor(5);
 
         // for example: setting up driver, maximizing browser, setting up implicit wait
         Driver.getDriver().get(ConfigurationReader.getProperty("url"));
@@ -47,37 +47,12 @@ public class Hooks {
         Driver.getDriver().navigate().refresh();
 
 
-
     }
 
     @Before("@api")
     public void setUpApi() throws InterruptedException {
-     //restasured base uri
+        //restasured base uri
         RestAssured.baseURI = ConfigurationReader.getProperty("base_url");
-        JsonObject body = new JsonObject();
-
-        // The mutation provided
-        String graphQlMutation = "mutation LoginUser($username: String!, $password: String!) {" +
-                "loginUser(username: $username, password: $password) { token } }";
-
-        body.addProperty("query", graphQlMutation);
-
-        // Add variables to the request
-        JsonObject variables = new JsonObject();
-        variables.addProperty("username", ConfigurationReader.getProperty("username"));
-        variables.addProperty("password", ConfigurationReader.getProperty("password"));
-        body.add("variables", variables);
-
-        // Execute Post Request
-        response = given()
-                .contentType("application/json")
-                .body(body.toString())
-                .when().post().prettyPeek();
-
-        JsonPath jsonPath = response.jsonPath();
-        tkn = jsonPath.getString("data.loginUser.token");
-
-
     }
 
     @After("@ui")
@@ -87,12 +62,12 @@ public class Hooks {
             scenario.attach(screenShot, "image/png", "screenshot");
         }
         BrowserUtils.waitFor(3);
-      // Driver.getDriver().findElement(By.xpath("//button[.='Logout']")).click();
+        // Driver.getDriver().findElement(By.xpath("//button[.='Logout']")).click();
         System.out.println("logouted");
         Driver.closeDriver();
 
-
     }
+
     @After("@api and @ui")
     public void tearDownAfterScenario() {
         // Reset the tkn, id and numberofPosts variables after each scenario

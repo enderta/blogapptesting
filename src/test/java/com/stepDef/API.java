@@ -28,11 +28,33 @@ public class API {
     String authorUpdate;
     static String id;
     static int numberofPosts;
+    static String tkn;
 
     @Given("I am an authenticated user")
     public void i_am_an_authenticated_user() {
+        JsonObject body = new JsonObject();
 
-        System.out.println("tkn = " + Hooks.tkn);
+        // The mutation provided
+        String graphQlMutation = "mutation LoginUser($username: String!, $password: String!) {" +
+                "loginUser(username: $username, password: $password) { token } }";
+
+        body.addProperty("query", graphQlMutation);
+
+        // Add variables to the request
+        JsonObject variables = new JsonObject();
+        variables.addProperty("username", ConfigurationReader.getProperty("username"));
+        variables.addProperty("password", ConfigurationReader.getProperty("password"));
+        body.add("variables", variables);
+
+        // Execute Post Request
+        response = given()
+                .contentType("application/json")
+                .body(body.toString())
+                .when().post().prettyPeek();
+
+        JsonPath jsonPath = response.jsonPath();
+        API.tkn = jsonPath.getString("data.loginUser.token");
+        System.out.println("tkn = " +  API.tkn);
     }
     @When("I perform a POST request to {string} with valid payload")
     public void i_perform_a_post_request_to_with_valid_payload(String string) {
@@ -55,12 +77,12 @@ public class API {
 
         response = given()
                 .contentType("application/json")
-                .header("Authorization", Hooks.tkn)
+                .header("Authorization",  API.tkn)
                 .body(body.toString())
                 .when().post().prettyPeek();
         JsonPath jsonPath = response.jsonPath();
         API.id = jsonPath.getString("data.createBlogPost.id");
-        System.out.println("id = " + id);
+        System.out.println("id = " + API.id);
     }
     @Then("I expect the status code to be {int}")
     public void i_expect_the_status_code_to_be(Integer int1) {
@@ -70,7 +92,7 @@ public class API {
     public void i_verify_the_response_contains_the_id_title_content_and_author() {
         JsonPath jsonPath = response.jsonPath();
         API.id = jsonPath.getString("data.createBlogPost.id");
-        System.out.println("id = " + id);
+        System.out.println("id = " +API.id);
         String author = jsonPath.getString("data.createBlogPost.author");
         System.out.println("author = " + author);
         Assert.assertEquals("ender",author);
@@ -98,7 +120,7 @@ public class API {
 
          response2 = given()
                 .contentType(ContentType.JSON)
-                .header("Authorization", Hooks.tkn)
+                .header("Authorization",  API.tkn)
                 .body(body2.toString())
                 .when().post().prettyPeek(); // Replace "/your_endpoint" with your actual endpoint
         System.out.println(response2.asString());
@@ -119,7 +141,7 @@ public class API {
 
         Response response = given()
                 .contentType("application/json")
-                .header("Authorization", Hooks.tkn)
+                .header("Authorization",  API.tkn)
                 .body(body.toString())
                 .when().post().prettyPeek(); // Replace "/your_endpoint" with your actual endpoint
         JsonPath jsonPath = response.jsonPath();
@@ -145,7 +167,7 @@ public class API {
             bodyDelete.add("variables",variablesDelete);
             response=given()
                     .contentType(ContentType.JSON)
-                    .header("Authorization",Hooks.tkn)
+                    .header("Authorization",API.tkn)
                     .body(bodyDelete.toString())
                     .when().post().prettyPeek();
 
